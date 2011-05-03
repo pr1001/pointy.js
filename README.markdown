@@ -1,4 +1,4 @@
-pointy.js is a Javascript pointer library. It doesn't do any sort of low-level magic but instead gives you some nice high-level classes than can point to other instances of themselves and can contain arbitrary data. Two collection classes are included, LinkedList and CircularLinkedList.
+pointy.js is a Javascript pointer library. It doesn't do any sort of low-level magic but instead gives you some nice high-level classes than can point to other instances of themselves and can contain arbitrary data. Two collection classes are included, LinkedList and CircularOneWayLinkedList.
 
 Examples
 --------
@@ -44,12 +44,17 @@ A linked list:
     list.current() // -> returns the "another value" pointers
     list.length    // -> 2
 
-A circular linked list:
+A circular one way linked list:
 
-    var list = new CircularLinkedList();
+    var list = new CircularOneWayLinkedList();
     list.append(new SingleOneWayPointer("a value"));
     list.current() // -> returns the "a value" pointer
     list.next()	   // -> returns the "a value" pointer (yes, it actually points to itself)
     list.append(new SingleOneWayPointer("another value"));
     list.current() // -> returns the "another value" pointer
     list.next()	   // -> returns the "a value" pointer
+    
+It can also take a set of values and automatically construct the circular linked list:
+
+    var list = new CircularOneWayLinkedList("a value", "another value");
+    var list2 = new CircularOneWayLinkedList(["a value", "another value"]);

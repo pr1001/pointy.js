@@ -1,5 +1,5 @@
 function LinkedList() {
-  this.pointers = null; // using null instead of an empty SingleOneWayPointer so that we can extend our LinkedList later and create a CircularLinkedList
+  this.pointers = null; // using null instead of an empty SingleOneWayPointer so that we can extend our LinkedList later and create a CircularOneWayLinkedList
   this.__first = new SingleOneWayPointer();
   this.__last = new SingleOneWayPointer();
   this.__current = new SingleOneWayPointer();
@@ -46,17 +46,44 @@ LinkedList.prototype.next = function next() {
   return this.__current.child();
 }
 
-function CircularLinkedList() {
-  this.pointers = null; // using null instead of an empty SingleOneWayPointer so that we can extend our LinkedList later and create a CircularLinkedList
+function CircularOneWayLinkedList() {
+  this.pointers = null; // using null instead of an empty SingleOneWayPointer so that we can extend our LinkedList later and create a CircularOneWayLinkedList
   this.__current = new SingleOneWayPointer();
   this.length = 0;
+  
+  // support loading values on creation
+  var args = Array.prototype.slice.call(arguments);
+  // if we were given an array
+  if (args.length == 1 && args[0] instanceof Array) {
+    // use that as our args
+    args = args[0];
+  }
+  // now load all values but don't use append() because we don't want to advance the current pointer
+  if (args.length > 0) {
+    var firstPointer = new SingleOneWayPointer();
+    for (var k = 0; k < args.length; k++) {
+      if (args[k] instanceof SingleOneWayPointer) {
+        var anotherPointer = args[k];
+      } else {
+        var anotherPointer = new SingleOneWayPointer(args[k]);
+      }
+      this.append(anotherPointer);
+      // if we've just added the first item
+      if (k == 0) {
+        // save a pointer to it with firstPointer
+        firstPointer.pointTo(this.__current.child());
+      }
+    }
+    // reset __current to point to the first item
+    this.__current.pointTo(firstPointer.child());
+  }
 }
-CircularLinkedList.prototype.toString = function toString() {
-  return "CircularLinkedList of length " + this.length;
+CircularOneWayLinkedList.prototype.toString = function toString() {
+  return "CircularOneWayLinkedList of length " + this.length;
 }
-CircularLinkedList.prototype.append = function append(anotherPointer) {
+CircularOneWayLinkedList.prototype.append = function append(anotherPointer) {
   if (!(anotherPointer instanceof SingleOneWayPointer)) {
-    throw new Error("CircularLinkedLists can only consist of SingleOneWayPointers.");
+    throw new Error("CircularOneWayLinkedLists can only consist of SingleOneWayPointers.");
   }
   // special case for first pointer
   if (this.pointers === null) {
@@ -76,15 +103,15 @@ CircularLinkedList.prototype.append = function append(anotherPointer) {
   }
   this.length += 1;
 }
-CircularLinkedList.prototype.current = function current() {
+CircularOneWayLinkedList.prototype.current = function current() {
   if (!this.__current.hasChild()) {
-    throw new Error("CircularLinkedList is empty.");
+    throw new Error("CircularOneWayLinkedList is empty.");
   }
   return this.__current.child();
 }
-CircularLinkedList.prototype.next = function next() {
+CircularOneWayLinkedList.prototype.next = function next() {
   if (!this.__current.child().hasChild()) {
-    throw new Error("CircularLinkedList doesn't have another item.");
+    throw new Error("CircularOneWayLinkedList doesn't have another item.");
   }
   // point to what it currently points to is pointing to
   this.__current.pointTo(this.__current.child().child());
