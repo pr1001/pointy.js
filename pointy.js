@@ -64,10 +64,10 @@ function SingleTwoWayPointer(value) {
   this.name = "SingleTwoWayPointer";
 }
 SingleTwoWayPointer.prototype = new TwoWayPointer();
-SingleTwoWayPointer.addChild = function addChild(anotherPointers) {
+SingleTwoWayPointer.prototype.addChild = function addChild(anotherPointer) {
   this.children[0] = anotherPointer;
 }
-SingleTwoWayPointer.addParent = function addParent(anotherPointers) {
+SingleTwoWayPointer.prototype.addParent = function addParent(anotherPointer) {
   this.parents[0] = anotherPointer;
 }
 SingleTwoWayPointer.prototype.pointTo = function pointTo(anotherPointer) {
