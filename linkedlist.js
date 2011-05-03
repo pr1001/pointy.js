@@ -184,7 +184,7 @@ CircularTwoWayLinkedList.prototype.current = function current() {
   return this.__current;
 }
 CircularTwoWayLinkedList.prototype.next = function next() {
-  if (!this.__current || !this.current.hasChild()) {
+  if (!this.__current || !this.__current.hasChild()) {
     throw new Error("CircularTwoWayLinkedList doesn't have another item.");
   }
   // point to what it currently points to is pointing to
@@ -192,7 +192,7 @@ CircularTwoWayLinkedList.prototype.next = function next() {
   return this.__current;
 }
 CircularTwoWayLinkedList.prototype.previous = function previous() {
-  if (!this.__current || !this.current.hasParent()) {
+  if (!this.__current || !this.__current.hasParent()) {
     throw new Error("CircularTwoWayLinkedList doesn't have another item.");
   }
   // point to what it currently points to is pointing to

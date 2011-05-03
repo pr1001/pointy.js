@@ -58,3 +58,10 @@ It can also take a set of values and automatically construct the circular linked
 
     var list = new CircularOneWayLinkedList("a value", "another value");
     var list2 = new CircularOneWayLinkedList(["a value", "another value"]);
+    
+And a circular two way linked list:
+
+    var list = new CircularTwoWayLinkedList(1, 2, 3);
+    list.current()  // -> returns the 1 pointer
+    list.next()     // -> returns the 2 pointer
+    list.previous() // -> returns the 1 pointer
